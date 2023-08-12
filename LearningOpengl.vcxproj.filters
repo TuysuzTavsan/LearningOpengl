@@ -39,5 +39,6 @@
   <ItemGroup>
     <None Include="ShaderSrc\vertex.glsl" />
     <None Include="ShaderSrc\fragment.glsl" />
+    <None Include="ShaderSrc\lightSource.glsl" />
   </ItemGroup>
 </Project>
