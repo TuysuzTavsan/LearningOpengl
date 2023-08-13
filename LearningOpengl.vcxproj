@@ -71,14 +71,14 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LibraryPath>$(SolutionDir)Dependencies\GLFW\lib\;$(LibraryPath)</LibraryPath>
-    <IncludePath>$(SolutionDir)Headers\;$(SolutionDir)Dependencies\GLFW\include\;$(SolutionDir)Dependencies\GLAD\include\;$(SolutionDir)Dependencies\stb_image\;$(SolutionDir)Dependencies\glm\;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)Dependencies\Lib\;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)Headers\;$(SolutionDir)Dependencies\Include\;$(SolutionDir)Dependencies\imgui\headers\;$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(SolutionDir)Headers\;$(SolutionDir)Dependencies\GLFW\include\;$(SolutionDir)Dependencies\GLAD\include\;$(SolutionDir)Dependencies\stb_image\;$(SolutionDir)Dependencies\glm\;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)Dependencies\GLFW\lib\;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)Headers\;$(SolutionDir)Dependencies\Include\;$(SolutionDir)Dependencies\imgui\headers\;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)Dependencies\Lib\;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
@@ -116,6 +116,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -131,6 +132,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -141,10 +143,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Dependencies\imgui\src\imgui.cpp" />
+    <ClCompile Include="Dependencies\imgui\src\imgui_demo.cpp" />
+    <ClCompile Include="Dependencies\imgui\src\imgui_draw.cpp" />
+    <ClCompile Include="Dependencies\imgui\src\imgui_impl_glfw.cpp" />
+    <ClCompile Include="Dependencies\imgui\src\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="Dependencies\imgui\src\imgui_tables.cpp" />
+    <ClCompile Include="Dependencies\imgui\src\imgui_widgets.cpp" />
+    <ClCompile Include="Src\Camera.cpp" />
     <ClCompile Include="Src\glad.c" />
     <ClCompile Include="Src\main.cpp" />
     <ClCompile Include="Src\Shader.cpp" />
-    <ClCompile Include="Src\Camera.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Headers\Camera.h" />
