@@ -32,8 +32,11 @@ void processInput(GLFWwindow* window);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 bool load_img(const char* path, unsigned int& texture, int format);
 
-glm::vec3 lightPos(0.0f, 0.0f, 0.0f);
 
+float lightx = 0.0f;
+float lighty = 0.0f;
+float lightz = 0.0f;
+glm::vec3 lightPos(lightx, lighty, lightz);
 
 int main()
 {
@@ -100,7 +103,7 @@ int main()
 	// @@@@@@@@@@@@@@@@@@@@@@ INITIALIZATION DONE @@@@@@@@@@@@@@@@@@@@@@
 
 
-	
+
 	Shader shader("ShaderSrc/vertex.glsl", "ShaderSrc/fragment.glsl");
 
 	Shader lightShader("ShaderSrc/vertex.glsl", "ShaderSrc/lightSource.glsl");
@@ -108,12 +111,12 @@ int main()
 
 	unsigned int textures[2];
 
-	if (! load_img("Resources/container.jpg", textures[0], GL_RGB))
+	if (!load_img("Resources/container.jpg", textures[0], GL_RGB))
 		return -1;
-	if (! load_img("Resources/awesomeface.png", textures[1], GL_RGBA))
+	if (!load_img("Resources/awesomeface.png", textures[1], GL_RGBA))
 		return -1;
 
-	
+
 	//float vertices[] = {
 	//-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
 	// 0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
@@ -165,35 +168,35 @@ int main()
 	 0.5f,  0.5f, -0.5f,	1.0f, 1.0f,		 0.0f,  0.0f, -1.0f,
 	-0.5f,  0.5f, -0.5f,	0.0f, 1.0f,		 0.0f,  0.0f, -1.0f,
 	-0.5f, -0.5f, -0.5f,	0.0f, 0.0f,		 0.0f,  0.0f, -1.0f,
-						
+
 	-0.5f, -0.5f,  0.5f,	0.0f, 0.0f,		 0.0f,  0.0f, 1.0f,
 	 0.5f, -0.5f,  0.5f,	1.0f, 0.0f,		 0.0f,  0.0f, 1.0f,
 	 0.5f,  0.5f,  0.5f,	1.0f, 1.0f,		 0.0f,  0.0f, 1.0f,
 	 0.5f,  0.5f,  0.5f,	1.0f, 1.0f,		 0.0f,  0.0f, 1.0f,
 	-0.5f,  0.5f,  0.5f,	0.0f, 1.0f,		 0.0f,  0.0f, 1.0f,
 	-0.5f, -0.5f,  0.5f,	0.0f, 0.0f,		 0.0f,  0.0f, 1.0f,
-						
+
 	-0.5f,  0.5f,  0.5f,	1.0f, 0.0f,		-1.0f,  0.0f,  0.0f,
 	-0.5f,  0.5f, -0.5f,	1.0f, 1.0f,		-1.0f,  0.0f,  0.0f,
 	-0.5f, -0.5f, -0.5f,	0.0f, 1.0f,		-1.0f,  0.0f,  0.0f,
 	-0.5f, -0.5f, -0.5f,	0.0f, 1.0f,		-1.0f,  0.0f,  0.0f,
 	-0.5f, -0.5f,  0.5f,	0.0f, 0.0f,		-1.0f,  0.0f,  0.0f,
 	-0.5f,  0.5f,  0.5f,	1.0f, 0.0f,		-1.0f,  0.0f,  0.0f,
-							
+
 	 0.5f,  0.5f,  0.5f,	1.0f, 0.0f,		 1.0f,  0.0f,  0.0f,
 	 0.5f,  0.5f, -0.5f,	1.0f, 1.0f,		 1.0f,  0.0f,  0.0f,
 	 0.5f, -0.5f, -0.5f,	0.0f, 1.0f,		 1.0f,  0.0f,  0.0f,
 	 0.5f, -0.5f, -0.5f,	0.0f, 1.0f,		 1.0f,  0.0f,  0.0f,
 	 0.5f, -0.5f,  0.5f,	0.0f, 0.0f,		 1.0f,  0.0f,  0.0f,
 	 0.5f,  0.5f,  0.5f,	1.0f, 0.0f,		 1.0f,  0.0f,  0.0f,
-						
+
 	-0.5f, -0.5f, -0.5f,	0.0f, 1.0f,		 0.0f, -1.0f,  0.0f,
 	 0.5f, -0.5f, -0.5f,	1.0f, 1.0f,		 0.0f, -1.0f,  0.0f,
 	 0.5f, -0.5f,  0.5f,	1.0f, 0.0f,		 0.0f, -1.0f,  0.0f,
 	 0.5f, -0.5f,  0.5f,	1.0f, 0.0f,		 0.0f, -1.0f,  0.0f,
 	-0.5f, -0.5f,  0.5f,	0.0f, 0.0f,		 0.0f, -1.0f,  0.0f,
 	-0.5f, -0.5f, -0.5f,	0.0f, 1.0f,		 0.0f, -1.0f,  0.0f,
-						
+
 	-0.5f,  0.5f, -0.5f,	0.0f, 1.0f,		 0.0f,  1.0f,  0.0f,
 	 0.5f,  0.5f, -0.5f,	1.0f, 1.0f,		 0.0f,  1.0f,  0.0f,
 	 0.5f,  0.5f,  0.5f,	1.0f, 0.0f,		 0.0f,  1.0f,  0.0f,
@@ -210,7 +213,7 @@ int main()
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
 	glGenBuffers(1, &EBO);
-	
+
 
 	glBindVertexArray(VAO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
@@ -219,7 +222,7 @@ int main()
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);*/
 
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), 0);
-	glEnableVertexAttribArray(0);	
+	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(5 * sizeof(float)));
@@ -227,7 +230,7 @@ int main()
 
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	
+
 	unsigned int lightVAO;
 	glGenVertexArrays(1, &lightVAO);
 
@@ -260,6 +263,13 @@ int main()
 
 	// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ RENDER LOOP START @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
+	//float colorx = time;
+	//float colory = -time + 0.2f;
+	//float colorz = time / 6.0f + 0.3f;
+
+
+	float color[] = { 0.0f, 0.0f, 0.0f };
+
 	glEnable(GL_DEPTH_TEST);
 	while (!glfwWindowShouldClose(window))
 	{
@@ -268,45 +278,20 @@ int main()
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 
-		// 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
-		if (show_demo_window)
-			ImGui::ShowDemoWindow(&show_demo_window);
-
-		// 2. Show a simple window that we create ourselves. We use a Begin/End pair to create a named window.
+		if (ImGui::Begin("Panel", (bool*)0, ImGuiWindowFlags_None))
 		{
-			static float f = 0.0f;
-			static int counter = 0;
-
-			ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
-
-			ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
-			ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our window open/close state
-			ImGui::Checkbox("Another Window", &show_another_window);
-
-			ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
-			ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
-
-			if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
-				counter++;
-			ImGui::SameLine();
-			ImGui::Text("counter = %d", counter);
-
-			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
-			ImGui::End();
+			const ImGuiViewport* main_viewport = ImGui::GetMainViewport();
+			ImGui::SetNextWindowPos(ImVec2(main_viewport->WorkPos.x + 650, main_viewport->WorkPos.y + 20), ImGuiCond_FirstUseEver);
+			ImGui::ColorPicker3("Color", color);
+			ImGui::SliderFloat("Lightx", &lightx, 0.0f, 20.0f, NULL, 0);
+			ImGui::SliderFloat("Lighty", &lighty, 0.0f, 20.0f, NULL, 0);
+			ImGui::SliderFloat("Lightz", &lightz, 0.0f, 20.0f, NULL, 0);
 		}
 
-		// 3. Show another simple window.
-		if (show_another_window)
-		{
-			ImGui::Begin("Another Window", &show_another_window);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
-			ImGui::Text("Hello from another window!");
-			if (ImGui::Button("Close Me"))
-				show_another_window = false;
-			ImGui::End();
-		}
+		ImGui::End();
 
-		// Rendering
-
+		lightPos = glm::vec3(lightx, lighty, lightz);
+		ImGui::Render();
 
 		float currentFrame = static_cast<float>(glfwGetTime());
 		deltaTime = currentFrame - lastFrame;
@@ -316,22 +301,15 @@ int main()
 
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		
-		ImGui::Render();
+
+
+
 
 		shader.use();
 		shader.setInt("texture1", 0);
 		shader.setInt("texture2", 1);
-		shader.setVec3("objectColor", 1.0f, 0.5f, 0.31f);
 		shader.setVec3("lightPos", lightPos);
-		float time = static_cast<float>(sin(glfwGetTime()));;
 
-		float colorx = time;
-		float colory = -time + 0.2f;
-		float colorz = time / 6.0f + 0.3f;
-
-		glm::vec3 color(colorx, colory, colorz);
-		shader.setVec3("lightColor", time * 0.2f, time * 0.3f, time * 0.7f);
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, textures[0]);
 		glActiveTexture(GL_TEXTURE1);
@@ -341,7 +319,7 @@ int main()
 		glm::mat4 view = camera.GetViewMatrix();
 		shader.setMat4("view", view);
 
-		
+
 		glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), float(WINDOW_WIDTH / WINDOW_HEIGHT), 0.1f, 100.0f);
 		shader.setMat4("projection", projection);
 
@@ -351,20 +329,24 @@ int main()
 		float lightZ = static_cast <float>(2.5f * cos(glfwGetTime() * 2.0f));
 		lightPos = glm::vec3(lightX, lightY, lightZ);
 
+
+
+
+
 		glBindVertexArray(VAO);
 		for (unsigned int i = 0; i < 10; i++)
 		{
 			glm::mat4 model = glm::mat4(1.0f);
 			model = glm::translate(model, cubePositions[i]);
-			float angle = 20.0f * (i+1) * (float)glfwGetTime();
+			float angle = 20.0f * (i + 1) * (float)glfwGetTime();
 			model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f + i * 0.1f, 0.3f - i * 0.12f, 0.5f + i * 0.11f));
 			shader.setMat4("model", model);
 			shader.setVec3("lightPos", lightPos);
 			shader.setVec3("viewPos", camera.Position);
-			lightShader.setVec3("lightColor", color);
+			shader.setVec3("lightColor", color);
 			glDrawArrays(GL_TRIANGLES, 0, 36);
 		}
-		
+
 		lightShader.use();
 		view = camera.GetViewMatrix();
 		glm::mat4 model = glm::mat4(1.0f);
@@ -377,7 +359,7 @@ int main()
 		lightShader.setMat4("projection", projection);
 		lightShader.setMat4("view", view);
 		lightShader.setVec3("lightColor", color);
-		
+
 		glBindVertexArray(lightVAO);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 
@@ -392,10 +374,11 @@ int main()
 			ImGui::RenderPlatformWindowsDefault();
 			glfwMakeContextCurrent(backup_current_context);
 		}
-		
+
 		glfwSwapBuffers(window);
 
 		glfwPollEvents();
+
 
 	}
 
@@ -411,7 +394,7 @@ int main()
 	return 0;
 }
 
-bool load_img(const char* path,unsigned int& texture, int format)
+bool load_img(const char* path, unsigned int& texture, int format)
 {
 
 	glGenTextures(1, &texture);
@@ -432,7 +415,7 @@ bool load_img(const char* path,unsigned int& texture, int format)
 	}
 	else
 	{
-		std::cout << "Failed to load texture at" << path <<  std::endl;
+		std::cout << "Failed to load texture at" << path << std::endl;
 		stbi_image_free(data);
 		return false;
 	}
@@ -452,6 +435,18 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 
 void processInput(GLFWwindow* window)
 {
+	if (glfwGetKey(window, GLFW_KEY_LEFT_ALT) == GLFW_PRESS)
+	{
+		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+		firstMouse = true;
+
+	}
+	else
+	{
+		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
+	}
+
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 	{
 		glfwSetWindowShouldClose(window, true);
