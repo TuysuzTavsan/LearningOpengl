@@ -117,50 +117,6 @@ int main()
 		return -1;
 
 
-	//float vertices[] = {
-	//-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-	// 0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
-	// 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-	// 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-	//-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-	//-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-
-	//-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-	// 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-	// 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-	// 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-	//-0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
-	//-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-
-	//-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-	//-0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-	//-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-	//-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-	//-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-	//-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-
-	// 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-	// 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-	// 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-	// 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-	// 0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-	// 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-
-	//-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-	// 0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
-	// 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-	// 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-	//-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-	//-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-
-	//-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-	// 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-	// 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-	// 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-	//-0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
-	//-0.5f,  0.5f, -0.5f,  0.0f, 1.0f
-	//};
-
 	float vertices[] = {
 	-0.5f, -0.5f, -0.5f,	0.0f, 0.0f,		 0.0f,  0.0f, -1.0f,
 	 0.5f, -0.5f, -0.5f,	1.0f, 0.0f,		 0.0f,  0.0f, -1.0f,
@@ -268,7 +224,7 @@ int main()
 	//float colorz = time / 6.0f + 0.3f;
 
 
-	float color[] = { 0.0f, 0.0f, 0.0f };
+	float color[] = { 1.0f, 1.0f, 1.0f };
 
 	glEnable(GL_DEPTH_TEST);
 	while (!glfwWindowShouldClose(window))
@@ -330,9 +286,6 @@ int main()
 		lightPos = glm::vec3(lightX, lightY, lightZ);
 
 
-
-
-
 		glBindVertexArray(VAO);
 		for (unsigned int i = 0; i < 10; i++)
 		{
@@ -344,6 +297,13 @@ int main()
 			shader.setVec3("lightPos", lightPos);
 			shader.setVec3("viewPos", camera.Position);
 			shader.setVec3("lightColor", color);
+			shader.setVec3("material.ambient", 0.1f, 0.1f, 0.1f);
+			shader.setVec3("material.diffuse", 0.5f, 0.5f, 0.5f);
+			shader.setVec3("material.specular", 0.5f, 0.5f, 0.5f);
+			shader.setFloat("material.shininess", 32.0f);
+			shader.setVec3("light.ambient", 0.2f, 0.2f, 0.2f);
+			shader.setVec3("light.diffuse", 0.5f, 0.5f, 0.5f); 
+			shader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
 			glDrawArrays(GL_TRIANGLES, 0, 36);
 		}
 
