@@ -102,21 +102,6 @@ int main()
 
 	// @@@@@@@@@@@@@@@@@@@@@@ INITIALIZATION DONE @@@@@@@@@@@@@@@@@@@@@@
 
-
-
-	Shader shader("ShaderSrc/vertex.glsl", "ShaderSrc/fragment.glsl");
-
-	Shader lightShader("ShaderSrc/vertex.glsl", "ShaderSrc/lightSource.glsl");
-	stbi_set_flip_vertically_on_load(true);
-
-	unsigned int textures[2];
-
-	if (!load_img("Resources/container.jpg", textures[0], GL_RGB))
-		return -1;
-	if (!load_img("Resources/awesomeface.png", textures[1], GL_RGBA))
-		return -1;
-
-
 	float vertices[] = {
 	-0.5f, -0.5f, -0.5f,	0.0f, 0.0f,		 0.0f,  0.0f, -1.0f,
 	 0.5f, -0.5f, -0.5f,	1.0f, 0.0f,		 0.0f,  0.0f, -1.0f,
@@ -190,7 +175,6 @@ int main()
 	unsigned int lightVAO;
 	glGenVertexArrays(1, &lightVAO);
 
-
 	glBindVertexArray(lightVAO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
@@ -203,6 +187,19 @@ int main()
 	// Draw in line mode
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
+
+	Shader shader("ShaderSrc/vertex.glsl", "ShaderSrc/fragment.glsl");
+	Shader lightShader("ShaderSrc/vertex.glsl", "ShaderSrc/lightSource.glsl");
+	stbi_set_flip_vertically_on_load(true);
+
+	unsigned int textures[3];
+
+	if (!load_img("Resources/container2.png", textures[0], GL_RGBA))
+		return -1;
+	if (!load_img("Resources/container2_s.png", textures[1], GL_RGBA))
+		return -1;
+	if (!load_img("Resources/matrix.jpg", textures[2], GL_RGB))
+		return -1;
 
 	glm::vec3 cubePositions[] = {
 		glm::vec3(0.0f,  0.0f,  0.0f),
@@ -219,13 +216,13 @@ int main()
 
 	// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ RENDER LOOP START @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
-	//float colorx = time;
-	//float colory = -time + 0.2f;
-	//float colorz = time / 6.0f + 0.3f;
+
 
 
 	float color[] = { 1.0f, 1.0f, 1.0f };
-
+	float ambient[] = { 0.2f, 0.2f, 0.2f };
+	float diffuse[] = { 0.5f, 0.5f, 0.5f };
+	float specular[] = { 1.0f, 1.0f, 1.0f };
 	glEnable(GL_DEPTH_TEST);
 	while (!glfwWindowShouldClose(window))
 	{
@@ -242,7 +239,21 @@ int main()
 			ImGui::SliderFloat("Lightx", &lightx, 0.0f, 20.0f, NULL, 0);
 			ImGui::SliderFloat("Lighty", &lighty, 0.0f, 20.0f, NULL, 0);
 			ImGui::SliderFloat("Lightz", &lightz, 0.0f, 20.0f, NULL, 0);
+
+			ImGui::SliderFloat("ambient", &ambient[0], 0.0f, 1.0f, NULL, 0);
+			ImGui::SliderFloat("diffuse", &diffuse[0], 0.0f, 1.0f, NULL, 0);
+			ImGui::SliderFloat("specular", &specular[0], 0.0f, 1.0f, NULL, 0);
+
 		}
+
+		ambient[1] = ambient[0];
+		ambient[2] = ambient[0];
+
+		diffuse[1] = diffuse[0];
+		diffuse[2] = diffuse[0];
+
+		specular[1] = specular[0];
+		specular[2] = specular[0];
 
 		ImGui::End();
 
@@ -262,14 +273,17 @@ int main()
 
 
 		shader.use();
-		shader.setInt("texture1", 0);
-		shader.setInt("texture2", 1);
+		shader.setInt("material.diffuse", 0);
+		shader.setInt("material.specular", 1);
+		shader.setInt("material.emission", 2);
 		shader.setVec3("lightPos", lightPos);
 
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, textures[0]);
-		glActiveTexture(GL_TEXTURE1);
+		glActiveTexture(GL_TEXTURE1);	
 		glBindTexture(GL_TEXTURE_2D, textures[1]);
+		glActiveTexture(GL_TEXTURE2);
+		glBindTexture(GL_TEXTURE_2D, textures[2]);
 
 
 		glm::mat4 view = camera.GetViewMatrix();
@@ -297,13 +311,10 @@ int main()
 			shader.setVec3("lightPos", lightPos);
 			shader.setVec3("viewPos", camera.Position);
 			shader.setVec3("lightColor", color);
-			shader.setVec3("material.ambient", 0.1f, 0.1f, 0.1f);
-			shader.setVec3("material.diffuse", 0.5f, 0.5f, 0.5f);
-			shader.setVec3("material.specular", 0.5f, 0.5f, 0.5f);
-			shader.setFloat("material.shininess", 32.0f);
-			shader.setVec3("light.ambient", 0.2f, 0.2f, 0.2f);
-			shader.setVec3("light.diffuse", 0.5f, 0.5f, 0.5f); 
-			shader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
+			shader.setFloat("material.shininess", 64.0f);
+			shader.setVec3("light.ambient", ambient);
+			shader.setVec3("light.diffuse", diffuse); 
+			shader.setVec3("light.specular", specular);
 			glDrawArrays(GL_TRIANGLES, 0, 36);
 		}
 
